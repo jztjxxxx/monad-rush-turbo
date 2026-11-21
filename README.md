@@ -1,12 +1,26 @@
-# ⚡ MONAD RUSH TURBO
+# ⚡ MONAD RUSH TURBO ⚡
+
+**30 秒定生死。慢一秒，都是输家。**
 
 > **Sub-Second Dynamic Odds Prediction Game with Win-Streak Jackpots & 10s Lightning Rounds on Monad**
 
 Built from scratch for the Monad Hackathon / Buildathon.
 
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-Play%20Now-00C853)](https://monad-rush-turbo.vercel.app)
 [![Monad Testnet](https://img.shields.io/badge/Monad%20Testnet-Chain%2010143-836EF9)](https://testnet.monadscan.com)
 [![Block Time](https://img.shields.io/badge/Block%20Time-400ms-00F59B)](https://docs.monad.xyz)
 [![Finality](https://img.shields.io/badge/Finality-800ms%20Instant-FF3366)](https://docs.monad.xyz)
+[![Solidity](https://img.shields.io/badge/Solidity-0.8-363636)](https://soliditylang.org)
+[![Next.js](https://img.shields.io/badge/Next.js-14-black)](https://nextjs.org)
+
+---
+
+## 🎮 30 秒学会玩法 (How to Play)
+
+连钱包 → 选 **UP** 还是 **DOWN** → 押 MON → 等 30 秒开奖 → 赢了点 **Claim** 领钱
+
+- 全场玩同一局；押的人越少的一边，赢了分得越多。
+- 手慢？每 5 局有一把 10 秒闪电局，手慢直接出局。
 
 ---
 
