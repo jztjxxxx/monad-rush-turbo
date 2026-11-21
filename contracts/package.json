@@ -1,0 +1,12 @@
+{
+  "name": "monad-rush-turbo-contracts",
+  "version": "1.0.0",
+  "scripts": {
+    "compile": "node scripts/compile.js",
+    "deploy": "node scripts/deploy.js"
+  },
+  "dependencies": {
+    "solc": "^0.8.20",
+    "viem": "^2.21.0"
+  }
+}
