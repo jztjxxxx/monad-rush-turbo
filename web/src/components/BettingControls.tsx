@@ -82,10 +82,10 @@ export function BettingControls({
         <button
           onClick={() => onBet('UP')}
           disabled={isLocked || !!userCurrentBet}
-          className="group relative p-4 rounded-2xl bg-gradient-to-br from-emerald-600 to-emerald-800 hover:from-emerald-500 hover:to-emerald-700 active:scale-[0.98] text-white font-black shadow-lg shadow-emerald-950/50 border border-emerald-400/40 transition-all disabled:opacity-40 disabled:cursor-not-allowed"
+          className="group relative p-3 sm:p-4 rounded-2xl bg-gradient-to-br from-emerald-600 to-emerald-800 hover:from-emerald-500 hover:to-emerald-700 active:scale-[0.98] text-white font-black shadow-lg shadow-emerald-950/50 border border-emerald-400/40 transition-all disabled:opacity-40 disabled:cursor-not-allowed"
         >
-          <div className="flex items-center justify-between mb-1">
-            <span className="text-sm md:text-base tracking-wide flex items-center gap-1.5">
+          <div className="flex flex-wrap items-center justify-between gap-1 mb-1">
+            <span className="text-[13px] sm:text-base tracking-wide flex items-center gap-1.5">
               <span>BULL / UP</span>
               <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
             </span>
@@ -102,10 +102,10 @@ export function BettingControls({
         <button
           onClick={() => onBet('DOWN')}
           disabled={isLocked || !!userCurrentBet}
-          className="group relative p-4 rounded-2xl bg-gradient-to-br from-rose-600 to-rose-800 hover:from-rose-500 hover:to-rose-700 active:scale-[0.98] text-white font-black shadow-lg shadow-rose-950/50 border border-rose-400/40 transition-all disabled:opacity-40 disabled:cursor-not-allowed"
+          className="group relative p-3 sm:p-4 rounded-2xl bg-gradient-to-br from-rose-600 to-rose-800 hover:from-rose-500 hover:to-rose-700 active:scale-[0.98] text-white font-black shadow-lg shadow-rose-950/50 border border-rose-400/40 transition-all disabled:opacity-40 disabled:cursor-not-allowed"
         >
-          <div className="flex items-center justify-between mb-1">
-            <span className="text-sm md:text-base tracking-wide flex items-center gap-1.5">
+          <div className="flex flex-wrap items-center justify-between gap-1 mb-1">
+            <span className="text-[13px] sm:text-base tracking-wide flex items-center gap-1.5">
               <span>BEAR / DOWN</span>
               <ArrowDownRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:translate-y-0.5 transition-transform" />
             </span>

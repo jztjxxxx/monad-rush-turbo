@@ -45,17 +45,17 @@ export function Navbar({
 
   return (
     <header className="w-full border-b border-purple-500/20 bg-[#0e0b1f]/80 backdrop-blur-lg sticky top-0 z-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 min-h-16 py-2 flex flex-wrap items-center justify-between gap-x-2 gap-y-2">
         {/* Brand */}
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-[#836EF9] to-[#A0055D] p-0.5 flex items-center justify-center glow-purple">
+        <div className="flex items-center gap-2 sm:gap-3 min-w-0">
+          <div className="w-8 h-8 sm:w-10 sm:h-10 shrink-0 rounded-xl bg-gradient-to-tr from-[#836EF9] to-[#A0055D] p-0.5 flex items-center justify-center glow-purple">
             <div className="w-full h-full bg-[#0e0b1f] rounded-[10px] flex items-center justify-center">
-              <Zap className="w-6 h-6 text-[#836EF9] fill-[#836EF9]" />
+              <Zap className="w-5 h-5 sm:w-6 sm:h-6 text-[#836EF9] fill-[#836EF9]" />
             </div>
           </div>
-          <div>
+          <div className="min-w-0">
             <div className="flex items-center gap-2">
-              <span className="font-black text-lg tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-white via-purple-200 to-[#836EF9]">
+              <span className="font-black text-base sm:text-lg tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-white via-purple-200 to-[#836EF9] whitespace-nowrap">
                 MONAD RUSH
               </span>
               <span className="px-1.5 py-0.5 rounded text-[10px] font-black tracking-widest bg-rose-500 text-white uppercase shadow-[0_0_10px_#f43f5e]">
@@ -63,8 +63,8 @@ export function Navbar({
               </span>
             </div>
             <div className="flex items-center gap-1.5 text-[10px] text-gray-400 font-mono">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping" />
-              <span>Monad Testnet (10143) · 400ms Sub-Second Blocks</span>
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping shrink-0" />
+              <span className="truncate">Monad Testnet (10143)<span className="hidden md:inline"> · 400ms Sub-Second Blocks</span></span>
             </div>
           </div>
         </div>
@@ -134,18 +134,20 @@ export function Navbar({
             <div className="flex items-center gap-2">
               <button
                 onClick={onToggleGuestMode}
-                className="px-3 py-1.5 rounded-xl bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-500 hover:to-amber-600 text-white font-bold text-xs shadow-md border border-amber-400/40 transition-all flex items-center gap-1.5"
+                className="px-2 sm:px-3 py-1.5 rounded-xl bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-500 hover:to-amber-600 text-white font-bold text-xs shadow-md border border-amber-400/40 transition-all flex items-center gap-1.5"
               >
                 <ShieldCheck className="w-3.5 h-3.5" />
-                <span>Instant Demo Pilot</span>
+                <span className="hidden sm:inline">Instant Demo Pilot</span>
+                <span className="sm:hidden">Demo</span>
               </button>
 
               <button
                 onClick={() => connect({ connector: connectors[0] })}
-                className="px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-[#836EF9] to-[#6345ec] hover:from-[#9582ff] hover:to-[#7458ff] text-white font-bold text-xs shadow-md glow-purple transition-all flex items-center gap-1.5"
+                className="px-2.5 sm:px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-[#836EF9] to-[#6345ec] hover:from-[#9582ff] hover:to-[#7458ff] text-white font-bold text-xs shadow-md glow-purple transition-all flex items-center gap-1.5"
               >
                 <Wallet className="w-3.5 h-3.5" />
-                <span>Connect Wallet</span>
+                <span className="hidden sm:inline">Connect Wallet</span>
+                <span className="sm:hidden">Connect</span>
               </button>
             </div>
           )}

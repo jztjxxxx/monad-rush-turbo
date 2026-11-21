@@ -72,8 +72,8 @@ export function PriceChart({
         : 'bg-[#151128]/90 border-purple-500/20 shadow-2xl backdrop-blur-md'
     }`}>
       {/* Top Bar with Round Info and Timer */}
-      <div className="flex items-center justify-between mb-4">
-        <div className="flex items-center gap-3">
+      <div className="flex flex-wrap items-center justify-between gap-2 mb-4">
+        <div className="flex flex-wrap items-center gap-1.5 sm:gap-3 min-w-0">
           <span className="font-mono text-xs md:text-sm font-black px-2.5 py-1 rounded-lg bg-purple-950/80 border border-purple-500/30 text-purple-300">
             ROUND #{roundId}
           </span>
@@ -109,8 +109,8 @@ export function PriceChart({
       </div>
 
       {/* Price Information */}
-      <div className="flex items-baseline justify-between mb-4">
-        <div>
+      <div className="flex flex-wrap items-baseline justify-between gap-2 mb-4">
+        <div className="min-w-0">
           <div className="text-xs text-gray-400 font-mono flex items-center gap-2">
             <span>{symbol} BINANCE LIVE</span>
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping" />

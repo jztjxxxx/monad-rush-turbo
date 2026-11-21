@@ -743,7 +743,7 @@ export default function Home() {
     : null;
 
   return (
-    <main className="min-h-screen flex flex-col justify-between">
+    <main className="min-h-screen w-full overflow-x-clip flex flex-col justify-between">
       {/* Navbar */}
       <Navbar
         jackpotAmount={currentJackpot}
@@ -759,7 +759,7 @@ export default function Home() {
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6 w-full space-y-6">
         {/* Mode & Operator Status Banner */}
         <div className="flex flex-wrap items-center justify-between gap-3 p-3 rounded-xl bg-[#130f28]/90 border border-purple-500/20 text-xs font-mono">
-          <div className="flex items-center gap-2">
+          <div className="flex flex-wrap items-center gap-2 min-w-0">
             <span className={`w-2.5 h-2.5 rounded-full ${guestMode ? 'bg-amber-400' : 'bg-emerald-400 animate-ping'}`} />
             <span className="text-gray-300">MODE:</span>
             <span className={`px-2 py-0.5 rounded font-black ${
@@ -825,7 +825,7 @@ export default function Home() {
 
         {/* 5) Claim Bar: ONLY lights up when previous round is confirmed resolved onchain! */}
         {isPreviousRoundClaimable && !claimableRounds.some((c) => c.roundId === lastOnchainBetRoundId) && (
-          <div className="p-3.5 rounded-xl bg-gradient-to-r from-emerald-900/90 to-purple-900/90 border border-emerald-400 text-white flex items-center justify-between text-xs font-mono">
+          <div className="p-3.5 rounded-xl bg-gradient-to-r from-emerald-900/90 to-purple-900/90 border border-emerald-400 text-white flex flex-wrap items-center justify-between gap-2 text-xs font-mono">
             <div className="flex items-center gap-2">
               <Award className="w-4 h-4 text-emerald-300" />
               <span>Round #{lastOnchainBetRoundId} confirmed resolved on Monad! (Losers can also claim without revert)</span>
