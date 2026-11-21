@@ -1,6 +1,6 @@
 # ⚡ MONAD RUSH TURBO ⚡
 
-**30 秒定输赢**
+**30 秒定输赢。慢一秒，都是输家。**
 
 > **Sub-Second Dynamic Odds Prediction Game with Win-Streak Jackpots & 10s Lightning Rounds on Monad**
 
