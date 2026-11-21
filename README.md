@@ -19,7 +19,7 @@ Built from scratch for the Monad Hackathon / Buildathon.
 
 用钱包 App（MetaMask / OKX 等）扫一扫，打开后连接钱包即可下注：
 
-![扫码进入 Monad Rush Turbo](qr-code.svg)
+![扫码进入 Monad Rush Turbo](qr-code.png)
 
 Demo 地址：https://monad-rush-turbo.vercel.app
 
