@@ -64,7 +64,7 @@ export function Navbar({
             </div>
             <div className="flex items-center gap-1.5 text-[10px] text-gray-400 font-mono">
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping shrink-0" />
-              <span className="truncate">Monad Testnet (10143)<span className="hidden md:inline"> · 400ms Sub-Second Blocks</span></span>
+              <span className="truncate">Monad 测试网 (10143)<span className="hidden md:inline"> · 400ms 亚秒级出块</span></span>
             </div>
           </div>
         </div>
@@ -74,14 +74,14 @@ export function Navbar({
           <div className="flex items-center gap-1.5 text-yellow-400">
             <Flame className="w-4 h-4 fill-yellow-400 animate-bounce" />
             <span className="text-xs font-bold uppercase tracking-wider text-purple-200">
-              ACCUMULATED JACKPOT
+              累积大奖池
             </span>
           </div>
           <span className="font-mono text-base font-black text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 via-amber-200 to-yellow-500">
             {jackpotAmount.toFixed(3)} MON
           </span>
           <span className="text-[10px] text-yellow-300/70 font-mono bg-yellow-950/60 px-2 py-0.5 rounded border border-yellow-500/30">
-            5-Streak Cleans All 💥
+            5 连胜掏空奖池 💥
           </span>
         </div>
 
@@ -91,10 +91,10 @@ export function Navbar({
           {userStreak > 0 && (
             <div className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-gradient-to-r from-amber-500/20 to-orange-500/20 border border-amber-500/40 text-amber-300 font-mono text-xs font-bold animate-pulse">
               <Flame className="w-4 h-4 fill-orange-400 text-orange-400" />
-              <span>{userStreak}x STREAK</span>
+              <span>{userStreak} 连胜</span>
               {userStreak >= 3 && (
                 <span className="text-[9px] bg-amber-400 text-black px-1.5 py-0.2 rounded font-black">
-                  {userStreak >= 5 ? 'GRAND POT UNLOCKED' : '20% POT TIER'}
+                  {userStreak >= 5 ? '大奖已解锁' : '20% 奖池档'}
                 </span>
               )}
             </div>
@@ -104,7 +104,7 @@ export function Navbar({
           <button
             onClick={onOpenLeaderboard}
             className="p-2 rounded-xl bg-purple-950/60 border border-purple-500/30 text-purple-200 hover:text-white hover:border-purple-400 transition-all"
-            title="Leaderboard & Streaks"
+            title="排行榜与连胜"
           >
             <Trophy className="w-4 h-4" />
           </button>
@@ -127,7 +127,7 @@ export function Navbar({
                 }}
                 className="px-2.5 py-1 rounded-lg bg-purple-900/40 hover:bg-rose-900/40 text-xs font-medium text-gray-300 hover:text-rose-200 border border-purple-500/20 transition-all"
               >
-                {guestMode ? 'Exit Demo' : 'Disconnect'}
+                {guestMode ? '退出演示' : '断开连接'}
               </button>
             </div>
           ) : (
@@ -137,8 +137,8 @@ export function Navbar({
                 className="px-2 sm:px-3 py-1.5 rounded-xl bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-500 hover:to-amber-600 text-white font-bold text-xs shadow-md border border-amber-400/40 transition-all flex items-center gap-1.5"
               >
                 <ShieldCheck className="w-3.5 h-3.5" />
-                <span className="hidden sm:inline">Instant Demo Pilot</span>
-                <span className="sm:hidden">Demo</span>
+                <span className="hidden sm:inline">游客演示</span>
+                <span className="sm:hidden">演示</span>
               </button>
 
               <button
@@ -146,8 +146,8 @@ export function Navbar({
                 className="px-2.5 sm:px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-[#836EF9] to-[#6345ec] hover:from-[#9582ff] hover:to-[#7458ff] text-white font-bold text-xs shadow-md glow-purple transition-all flex items-center gap-1.5"
               >
                 <Wallet className="w-3.5 h-3.5" />
-                <span className="hidden sm:inline">Connect Wallet</span>
-                <span className="sm:hidden">Connect</span>
+                <span className="hidden sm:inline">连接钱包</span>
+                <span className="sm:hidden">连接</span>
               </button>
             </div>
           )}

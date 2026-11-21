@@ -17,11 +17,11 @@ export function LeaderboardModal({
   if (!isOpen) return null;
 
   const mockStreaks = [
-    { rank: 1, address: '0x8a3F...49b2', streak: 5, profit: '4.820 MON', tag: 'CLEARED JACKPOT 💥' },
-    { rank: 2, address: '0x4f12...e81c', streak: 4, profit: '2.450 MON', tag: 'HOT STREAK 🔥' },
-    { rank: 3, address: '0x7b99...a103', streak: 3, profit: '1.180 MON', tag: '20% POT WINNER' },
-    { rank: 4, address: '0x1c44...77d9', streak: 2, profit: '0.640 MON', tag: 'ACTIVE' },
-    { rank: 5, address: '0x99e0...55ab', streak: 2, profit: '0.420 MON', tag: 'ACTIVE' },
+    { rank: 1, address: '0x8a3F...49b2', streak: 5, profit: '4.820 MON', tag: '已掏空奖池 💥' },
+    { rank: 2, address: '0x4f12...e81c', streak: 4, profit: '2.450 MON', tag: '连胜火热 🔥' },
+    { rank: 3, address: '0x7b99...a103', streak: 3, profit: '1.180 MON', tag: '20% 奖池得主' },
+    { rank: 4, address: '0x1c44...77d9', streak: 2, profit: '0.640 MON', tag: '进行中' },
+    { rank: 5, address: '0x99e0...55ab', streak: 2, profit: '0.420 MON', tag: '进行中' },
   ];
 
   return (
@@ -41,7 +41,7 @@ export function LeaderboardModal({
             <span>⚠️ Demo data · 演示示例数据（主网/测试网历史记录统计）</span>
           </span>
           <span className="text-[10px] bg-amber-500/20 px-1.5 py-0.5 rounded text-amber-200">
-            Simulated
+            示例
           </span>
         </div>
 
@@ -52,10 +52,10 @@ export function LeaderboardModal({
           </div>
           <div>
             <h2 className="text-xl font-black text-white tracking-wide flex items-center gap-2">
-              <span>HALL OF CHAMPIONS & JACKPOT</span>
+              <span>冠军榜 & 大奖池</span>
               <Crown className="w-5 h-5 text-amber-400" />
             </h2>
-            <p className="text-xs text-gray-400">Global win-streak rankings and collective jackpot goals</p>
+            <p className="text-xs text-gray-400">全球连胜排行与大奖池目标</p>
           </div>
         </div>
 
@@ -63,20 +63,20 @@ export function LeaderboardModal({
         <div className="mb-6 p-4 rounded-xl bg-gradient-to-r from-purple-950/80 via-black/60 to-amber-950/80 border border-yellow-500/30">
           <div className="flex items-center justify-between mb-2">
             <span className="text-xs font-bold text-yellow-300 uppercase tracking-wider flex items-center gap-1.5">
-              <Gift className="w-4 h-4" /> JACKPOT MECHANICS
+              <Gift className="w-4 h-4" /> 大奖池规则
             </span>
             <span className="font-mono text-sm font-black text-white">
-              Current Pool: {jackpotAmount.toFixed(3)} MON
+              当前奖池：{jackpotAmount.toFixed(3)} MON
             </span>
           </div>
           <div className="grid grid-cols-2 gap-2 text-xs text-gray-300">
             <div className="p-2 rounded-lg bg-black/40 border border-white/5">
-              <span className="text-amber-400 font-bold">🔥 3-Win Streak</span>
-              <p className="text-[11px] text-gray-400 mt-0.5">Claims 20% bonus from the accumulated pool!</p>
+              <span className="text-amber-400 font-bold">🔥 3 连胜</span>
+              <p className="text-[11px] text-gray-400 mt-0.5">领取累积奖池的 20% 加成！</p>
             </div>
             <div className="p-2 rounded-lg bg-black/40 border border-white/5">
-              <span className="text-rose-400 font-bold">💥 5-Win Streak</span>
-              <p className="text-[11px] text-gray-400 mt-0.5">Empties 100% of the entire global jackpot pool!</p>
+              <span className="text-rose-400 font-bold">💥 5 连胜</span>
+              <p className="text-[11px] text-gray-400 mt-0.5">掏空整个大奖池的 100%！</p>
             </div>
           </div>
         </div>
@@ -84,10 +84,10 @@ export function LeaderboardModal({
         {/* Leaderboard Table */}
         <div className="space-y-2">
           <div className="text-xs font-mono font-bold text-gray-400 px-3 flex justify-between">
-            <span>CHAMPION</span>
+            <span>玩家</span>
             <div className="flex gap-8">
-              <span>WIN STREAK</span>
-              <span>TOTAL PROFIT</span>
+              <span>连胜</span>
+              <span>总盈利</span>
             </div>
           </div>
 
@@ -113,7 +113,7 @@ export function LeaderboardModal({
               <div className="flex items-center gap-8">
                 <div className="flex items-center gap-1 text-amber-400 font-bold">
                   <Flame className="w-3.5 h-3.5 fill-current" />
-                  <span>{item.streak}x</span>
+                  <span>{item.streak} 连胜</span>
                 </div>
                 <div className="text-emerald-400 font-bold">
                   +{item.profit}
@@ -129,7 +129,7 @@ export function LeaderboardModal({
             onClick={onClose}
             className="w-full py-2.5 rounded-xl bg-[#836EF9] hover:bg-[#735ce4] text-white font-bold text-xs uppercase tracking-wider transition-all"
           >
-            Back to Game
+            返回游戏
           </button>
         </div>
       </div>

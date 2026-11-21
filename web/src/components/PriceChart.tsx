@@ -75,12 +75,12 @@ export function PriceChart({
       <div className="flex flex-wrap items-center justify-between gap-2 mb-4">
         <div className="flex flex-wrap items-center gap-1.5 sm:gap-3 min-w-0">
           <span className="font-mono text-xs md:text-sm font-black px-2.5 py-1 rounded-lg bg-purple-950/80 border border-purple-500/30 text-purple-300">
-            ROUND #{roundId}
+            第 {roundId} 局
           </span>
 
           {isLightning && (
             <span className="flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-red-600/30 border border-red-500 text-red-300 text-xs font-black tracking-wider uppercase animate-pulse">
-              <Zap className="w-3.5 h-3.5 fill-red-400 text-red-400" /> 10s LIGHTNING ROUND
+              <Zap className="w-3.5 h-3.5 fill-red-400 text-red-400" /> 10 秒闪电局
             </span>
           )}
 
@@ -93,7 +93,7 @@ export function PriceChart({
           }`}>
             {status === 'BETTING' && <CheckCircle2 className="w-3.5 h-3.5" />}
             {status === 'LOCKED' && <AlertTriangle className="w-3.5 h-3.5" />}
-            {status}
+            {status === 'BETTING' ? '下注中' : status === 'LOCKED' ? '已锁定' : '结算中'}
           </span>
         </div>
 
@@ -112,7 +112,7 @@ export function PriceChart({
       <div className="flex flex-wrap items-baseline justify-between gap-2 mb-4">
         <div className="min-w-0">
           <div className="text-xs text-gray-400 font-mono flex items-center gap-2">
-            <span>{symbol} BINANCE LIVE</span>
+            <span>{symbol} · 币安实时</span>
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping" />
           </div>
           <div className="flex items-baseline gap-2">
@@ -128,7 +128,7 @@ export function PriceChart({
         </div>
 
         <div className="text-right">
-          <div className="text-xs text-gray-400 font-mono">LOCKED REFERENCE PRICE</div>
+          <div className="text-xs text-gray-400 font-mono">锁定参考价</div>
           <div className="text-sm md:text-base font-mono font-bold text-gray-200">
             ${formatPrice(lockPrice)}
           </div>
