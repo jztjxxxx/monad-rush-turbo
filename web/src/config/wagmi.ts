@@ -7,7 +7,7 @@ export const monadTestnet = defineChain({
   name: 'Monad Testnet',
   nativeCurrency: { name: 'Monad', symbol: 'MON', decimals: 18 },
   rpcUrls: {
-    default: { http: ['https://testnet-rpc.monad.xyz'] },
+    default: { http: ['https://rpc-testnet.monadinfra.com'] },
   },
   blockExplorers: {
     default: { name: 'Monadscan', url: 'https://testnet.monadscan.com' },
@@ -19,7 +19,7 @@ export const config = createConfig({
   chains: [monadTestnet],
   connectors: [injected()],
   transports: {
-    [monadTestnet.id]: http(),
+    [monadTestnet.id]: http('https://rpc-testnet.monadinfra.com'),
   },
   ssr: true,
 });
