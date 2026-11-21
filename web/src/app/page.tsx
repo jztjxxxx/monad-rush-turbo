@@ -20,7 +20,7 @@ const CONTRACT_ABI = contractData.abi as any;
 // Read-only client for the unclaimed-winnings scanner (QuickNode: batch-friendly)
 const claimScanClient = createPublicClient({
   chain: monadTestnet,
-  transport: http('https://rpc-testnet.monadinfra.com'),
+  transport: http('https://rpc-testnet.monadinfra.com', { batch: true }),
 });
 
 export default function Home() {

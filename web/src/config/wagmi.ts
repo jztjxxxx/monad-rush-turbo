@@ -19,7 +19,7 @@ export const config = createConfig({
   chains: [monadTestnet],
   connectors: [injected()],
   transports: {
-    [monadTestnet.id]: http('https://rpc-testnet.monadinfra.com'),
+    [monadTestnet.id]: http('https://rpc-testnet.monadinfra.com', { batch: true }),
   },
   ssr: true,
 });
