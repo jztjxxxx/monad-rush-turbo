@@ -4,6 +4,7 @@ import React from 'react';
 import { Zap, Flame, Trophy, Wallet, ShieldCheck } from 'lucide-react';
 import { useAccount, useConnect, useDisconnect, useBalance } from 'wagmi';
 import { monadTestnet } from '@/config/wagmi';
+import { useLang } from '@/i18n';
 
 interface NavbarProps {
   jackpotAmount: number;
@@ -30,6 +31,7 @@ export function Navbar({
   const { data: balanceData } = useBalance({
     address: address,
   });
+  const { lang, setLang, L } = useLang();
 
   const displayAddress = guestMode
     ? `${guestAddress.slice(0, 6)}...${guestAddress.slice(-4)}`
@@ -64,7 +66,7 @@ export function Navbar({
             </div>
             <div className="flex items-center gap-1.5 text-[10px] text-gray-400 font-mono">
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping shrink-0" />
-              <span className="truncate">Monad 测试网 (10143)<span className="hidden md:inline"> · 400ms 亚秒级出块</span></span>
+              <span className="truncate">{L('Monad 测试网 (10143)', 'Monad Testnet (10143)')}<span className="hidden md:inline">{L(' · 400ms 亚秒级出块', ' · 400ms Sub-Second Blocks')}</span></span>
             </div>
           </div>
         </div>
@@ -74,14 +76,14 @@ export function Navbar({
           <div className="flex items-center gap-1.5 text-yellow-400">
             <Flame className="w-4 h-4 fill-yellow-400 animate-bounce" />
             <span className="text-xs font-bold uppercase tracking-wider text-purple-200">
-              累积大奖池
+              {L('累积大奖池', 'ACCUMULATED JACKPOT')}
             </span>
           </div>
           <span className="font-mono text-base font-black text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 via-amber-200 to-yellow-500">
             {jackpotAmount.toFixed(3)} MON
           </span>
           <span className="text-[10px] text-yellow-300/70 font-mono bg-yellow-950/60 px-2 py-0.5 rounded border border-yellow-500/30">
-            5 连胜掏空奖池 💥
+            {L('5 连胜掏空奖池 💥', '5-Streak Cleans All 💥')}
           </span>
         </div>
 
@@ -91,20 +93,26 @@ export function Navbar({
           {userStreak > 0 && (
             <div className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-gradient-to-r from-amber-500/20 to-orange-500/20 border border-amber-500/40 text-amber-300 font-mono text-xs font-bold animate-pulse">
               <Flame className="w-4 h-4 fill-orange-400 text-orange-400" />
-              <span>{userStreak} 连胜</span>
+              <span>{L(`${userStreak} 连胜`, `${userStreak}x STREAK`)}</span>
               {userStreak >= 3 && (
                 <span className="text-[9px] bg-amber-400 text-black px-1.5 py-0.2 rounded font-black">
-                  {userStreak >= 5 ? '大奖已解锁' : '20% 奖池档'}
+                  {userStreak >= 5 ? L('大奖已解锁', 'GRAND POT UNLOCKED') : L('20% 奖池档', '20% POT TIER')}
                 </span>
               )}
             </div>
           )}
 
+          {/* Language toggle */}
+          <div className="flex items-center rounded-xl overflow-hidden border border-purple-500/30 text-[11px] font-bold shrink-0">
+            <button onClick={() => setLang('zh')} className={`px-2 py-1.5 transition-all ${lang === 'zh' ? 'bg-[#836EF9] text-white' : 'bg-purple-950/60 text-purple-300'}`}>中</button>
+            <button onClick={() => setLang('en')} className={`px-2 py-1.5 transition-all ${lang === 'en' ? 'bg-[#836EF9] text-white' : 'bg-purple-950/60 text-purple-300'}`}>EN</button>
+          </div>
+
           {/* Leaderboard button */}
           <button
             onClick={onOpenLeaderboard}
             className="p-2 rounded-xl bg-purple-950/60 border border-purple-500/30 text-purple-200 hover:text-white hover:border-purple-400 transition-all"
-            title="排行榜与连胜"
+            title={L('排行榜与连胜', 'Leaderboard & Streaks')}
           >
             <Trophy className="w-4 h-4" />
           </button>
@@ -127,7 +135,7 @@ export function Navbar({
                 }}
                 className="px-2.5 py-1 rounded-lg bg-purple-900/40 hover:bg-rose-900/40 text-xs font-medium text-gray-300 hover:text-rose-200 border border-purple-500/20 transition-all"
               >
-                {guestMode ? '退出演示' : '断开连接'}
+                {guestMode ? L('退出演示', 'Exit Demo') : L('断开连接', 'Disconnect')}
               </button>
             </div>
           ) : (
@@ -137,8 +145,8 @@ export function Navbar({
                 className="px-2 sm:px-3 py-1.5 rounded-xl bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-500 hover:to-amber-600 text-white font-bold text-xs shadow-md border border-amber-400/40 transition-all flex items-center gap-1.5"
               >
                 <ShieldCheck className="w-3.5 h-3.5" />
-                <span className="hidden sm:inline">游客演示</span>
-                <span className="sm:hidden">演示</span>
+                <span className="hidden sm:inline">{L('游客演示', 'Instant Demo Pilot')}</span>
+                <span className="sm:hidden">{L('演示', 'Demo')}</span>
               </button>
 
               <button
@@ -146,8 +154,8 @@ export function Navbar({
                 className="px-2.5 sm:px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-[#836EF9] to-[#6345ec] hover:from-[#9582ff] hover:to-[#7458ff] text-white font-bold text-xs shadow-md glow-purple transition-all flex items-center gap-1.5"
               >
                 <Wallet className="w-3.5 h-3.5" />
-                <span className="hidden sm:inline">连接钱包</span>
-                <span className="sm:hidden">连接</span>
+                <span className="hidden sm:inline">{L('连接钱包', 'Connect Wallet')}</span>
+                <span className="sm:hidden">{L('连接', 'Connect')}</span>
               </button>
             </div>
           )}

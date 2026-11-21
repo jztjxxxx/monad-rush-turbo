@@ -13,6 +13,7 @@ import { LightningBanner } from '@/components/LightningBanner';
 import { LeaderboardModal } from '@/components/LeaderboardModal';
 import { Flame, Sparkles, CheckCircle2, AlertCircle, Zap, Award, Crown } from 'lucide-react';
 import contractData from '@/contracts/MonadRushTurbo.json';
+import { useLang } from '@/i18n';
 
 const CONTRACT_ADDRESS = (process.env.NEXT_PUBLIC_CONTRACT_ADDRESS || contractData.address) as `0x${string}`;
 const CONTRACT_ABI = contractData.abi as any;
@@ -27,6 +28,7 @@ export default function Home() {
   const { address, isConnected } = useAccount();
   const { data: balanceData, refetch: refetchBalance } = useBalance({ address });
   const { writeContractAsync, isPending: isTxPending } = useWriteContract();
+  const { L } = useLang();
 
   // Mode: Default is Onchain Mode! Guest mode is backup only.
   const [guestMode, setGuestMode] = useState<boolean>(false);
@@ -326,9 +328,9 @@ export default function Home() {
       setGuestUpPool(+(0.25 + Math.random() * 0.35).toFixed(3));
       setGuestDownPool(+(0.15 + Math.random() * 0.25).toFixed(3));
       setGuestStreak(0);
-      setToastMessage('🛠️ 已切换到游客演示模式（模拟奖池）');
+      setToastMessage(L('🛠️ 已切换到游客演示模式（模拟奖池）', '🛠️ Switched to Backup Guest Demo Mode (simulated pools enabled)'));
     } else {
-      setToastMessage('⛓️ 已切换到链上模式（全部为真实链上数据）');
+      setToastMessage(L('⛓️ 已切换到链上模式（全部为真实链上数据）', '⛓️ Switched to Onchain Wagmi Mode (strictly real chain data)'));
       refetchStats();
       refetchRoundId();
       refetchJackpot();
@@ -386,7 +388,7 @@ export default function Home() {
     // this round was already expired), wait and retry WITHOUT latching
     // lastResolvedRoundRef, so settlement proceeds once the feed syncs.
     if (!guestMode && isOperator && (!hasInitializedFirstPrice.current || Date.now() - lastPriceAtRef.current > 5000)) {
-      setToastMessage('⏳ 等待 BTC 实时价格同步后再结算…');
+      setToastMessage(L('⏳ 等待 BTC 实时价格同步后再结算…', '⏳ Waiting for live BTC price feed before onchain settlement...'));
       setTimeout(() => { resolveRetryRef.current(); }, 1500);
       return;
     }
@@ -400,7 +402,7 @@ export default function Home() {
         try {
           const btcPriceCents = BigInt(Math.round(currentPrice * 100));
           const nextIsLightning = ((activeRoundId + 1) % 5 === 0); // every 5th round, derived from the chain round id
-          setToastMessage(`👑 [主持人] 正在链上结算 (BTC: $${currentPrice.toFixed(2)})…`);
+          setToastMessage(L(`👑 [主持人] 正在链上结算 (BTC: $${currentPrice.toFixed(2)})…`, `👑 [Operator] Calling executeRound onchain (BTC: $${currentPrice.toFixed(2)})...`));
           
           await writeContractAsync({
             address: CONTRACT_ADDRESS,
@@ -410,7 +412,7 @@ export default function Home() {
             args: [btcPriceCents, btcPriceCents, nextIsLightning],
           });
 
-          setToastMessage(`✅ [主持人] 结算已上链确认！下一局开始。`);
+          setToastMessage(L(`✅ [主持人] 结算已上链确认！下一局开始。`, `✅ [Operator] executeRound confirmed on Monad Testnet! Next round active.`));
           refetchRoundId();
           refetchStats();
           refetchJackpot();
@@ -422,7 +424,7 @@ export default function Home() {
           // Release the settlement latch so this round can be retried —
           // a rejected popup must not wedge the round for this session.
           lastResolvedRoundRef.current = -1;
-          setToastMessage(`⚠️ [主持人] 结算失败：${err.shortMessage || err.message} — 4 秒后重试…`);
+          setToastMessage(L(`⚠️ [主持人] 结算失败：${err.shortMessage || err.message} — 4 秒后重试…`, `⚠️ [Operator] executeRound failed: ${err.shortMessage || err.message} — retrying in 4s...`));
           setTimeout(() => { resolveRetryRef.current(); }, 4000);
         } finally {
           setTimeout(() => {
@@ -433,7 +435,7 @@ export default function Home() {
         // 6) Non-operator: ONLY prompt ONCE per round!
         if (lastWaitingPromptRoundRef.current !== activeRoundId) {
           lastWaitingPromptRoundRef.current = activeRoundId;
-          setToastMessage(`⏳ 第 ${activeRoundId} 局结束，等待主持人链上结算…`);
+          setToastMessage(L(`⏳ 第 ${activeRoundId} 局结束，等待主持人链上结算…`, `⏳ Round #${activeRoundId} ended. Waiting for operator onchain settlement...`));
         }
       }
       return;
@@ -457,7 +459,7 @@ export default function Home() {
     if (currentGuestBet && currentGuestBet.roundId === activeRoundId) {
       if (winningDir === 'DRAW') {
         setGuestBalance((b) => +(b + currentGuestBet.amount).toFixed(3));
-        setToastMessage(`🤝 平局！退回 ${currentGuestBet.amount} MON，不抽 5% 手续费。`);
+        setToastMessage(L(`🤝 平局！退回 ${currentGuestBet.amount} MON，不抽 5% 手续费。`, `🤝 Exact tie (Draw)! Refunded ${currentGuestBet.amount} MON. No 5% fee taken.`));
       } else if (currentGuestBet.direction === winningDir) {
         const mult = winningDir === 'UP' ? upOdds : downOdds;
         const win = +(currentGuestBet.amount * mult).toFixed(3);
@@ -471,20 +473,20 @@ export default function Home() {
           const bonus = +(guestJackpot * 0.2).toFixed(3);
           setGuestJackpot((j) => Math.max(0, +(j - bonus).toFixed(3)));
           setGuestBalance((b) => +(b + bonus).toFixed(3));
-          setToastMessage(`🔥 3 连胜！赢 ${win} MON + 20% 奖池加成 (+${bonus} MON)！`);
+          setToastMessage(L(`🔥 3 连胜！赢 ${win} MON + 20% 奖池加成 (+${bonus} MON)！`, `🔥 3-WIN STREAK! Won ${win} MON + 20% Jackpot Bonus (+${bonus} MON)!`));
         } else if (newStreak >= 5) {
           const grand = guestJackpot;
           setGuestJackpot(0.2);
           setGuestBalance((b) => +(b + grand).toFixed(3));
           setGuestStreak(0);
-          setToastMessage(`💥 5 连胜！掏空整个大奖池 (+${grand.toFixed(3)} MON)！`);
+          setToastMessage(L(`💥 5 连胜！掏空整个大奖池 (+${grand.toFixed(3)} MON)！`, `💥 5-WIN STREAK! EMPTIED ENTIRE JACKPOT (+${grand.toFixed(3)} MON)!`));
         } else {
-          setToastMessage(`🎉 赢了 ${win} MON！(${mult.toFixed(2)}x 动态赔率)`);
+          setToastMessage(L(`🎉 赢了 ${win} MON！(${mult.toFixed(2)}x 动态赔率)`, `🎉 WON ${win} MON! (${mult.toFixed(2)}x Dynamic Odds)`));
         }
       } else {
         setGuestStreak(0);
         playSound(220);
-        setToastMessage(`❌ 本局输了，连胜清零。`);
+        setToastMessage(L(`❌ 本局输了，连胜清零。`, `❌ Round Lost. Streak reset to 0.`));
       }
     }
 
@@ -536,19 +538,19 @@ export default function Home() {
       if (direction === 'UP') setGuestUpPool((p) => +(p + betAmount).toFixed(3));
       else setGuestDownPool((p) => +(p + betAmount).toFixed(3));
 
-      setToastMessage(`⚡ 游客下注成功：${betAmount} MON 押 ${direction}`);
+      setToastMessage(L(`⚡ 游客下注成功：${betAmount} MON 押 ${direction}`, `⚡ Guest Bet confirmed: Placed ${betAmount} MON on ${direction}`));
       return;
     }
 
     // Onchain Mode with Wagmi
     if (!isConnected) {
-      setToastMessage('⚠️ 请先连接钱包，或切换到游客演示模式！');
+      setToastMessage(L('⚠️ 请先连接钱包，或切换到游客演示模式！', '⚠️ Please connect your Web3 wallet first, or switch to Backup Guest Demo mode!'));
       return;
     }
 
     try {
       const val = parseEther(betAmount.toString());
-      setToastMessage(`⏳ 正在发送交易到 Monad 测试网 (400ms 确认)…`);
+      setToastMessage(L(`⏳ 正在发送交易到 Monad 测试网 (400ms 确认)…`, `⏳ Sending transaction to Monad Testnet (400ms finality)...`));
       if (direction === 'UP') {
         await writeContractAsync({
           address: CONTRACT_ADDRESS,
@@ -571,13 +573,13 @@ export default function Home() {
       // Record bet round id for claim verification
       setLastOnchainBetRoundId(activeRoundId);
       playSound(587);
-      setToastMessage(`✅ 下注已上链！Monad 极速确认！`);
+      setToastMessage(L(`✅ 下注已上链！Monad 极速确认！`, `✅ Bet placed onchain! Fast confirmation on Monad!`));
       refetchStats();
       refetchUserBet();
       refetchBalance();
     } catch (err: any) {
       console.error(err);
-      setToastMessage(`❌ 链上交易被拒绝：${err.shortMessage || err.message}`);
+      setToastMessage(L(`❌ 链上交易被拒绝：${err.shortMessage || err.message}`, `❌ Onchain transaction rejected: ${err.shortMessage || err.message}`));
     }
   };
 
@@ -597,7 +599,7 @@ export default function Home() {
   const handleClaim = async () => {
     if (!isConnected || !lastOnchainBetRoundId) return;
     try {
-      setToastMessage(`⏳ 正在领取第 ${lastOnchainBetRoundId} 局…`);
+      setToastMessage(L(`⏳ 正在领取第 ${lastOnchainBetRoundId} 局…`, `⏳ Claiming round #${lastOnchainBetRoundId} onchain...`));
       await writeContractAsync({
         address: CONTRACT_ADDRESS,
         abi: CONTRACT_ABI,
@@ -606,14 +608,14 @@ export default function Home() {
         args: [BigInt(lastOnchainBetRoundId)],
       });
       setLastOnchainBetRoundId(null);
-      setToastMessage(`✅ 领取成功！（连胜已更新）`);
+      setToastMessage(L(`✅ 领取成功！（连胜已更新）`, `✅ Claim executed onchain! (Marked claimed & streak updated)`));
       refetchStreak();
       refetchJackpot();
       refetchBalance();
       refetchPreviousBet();
     } catch (err: any) {
       console.error(err);
-      setToastMessage(`❌ 领取失败：${err.shortMessage || err.message}`);
+      setToastMessage(L(`❌ 领取失败：${err.shortMessage || err.message}`, `❌ Claim failed: ${err.shortMessage || err.message}`));
     }
   };
 
@@ -673,7 +675,7 @@ export default function Home() {
     if (!isConnected) return;
     try {
       setClaimingRoundId(roundId);
-      setToastMessage(`⏳ 正在领取第 ${roundId} 局…`);
+      setToastMessage(L(`⏳ 正在领取第 ${roundId} 局…`, `⏳ Claiming round #${roundId} onchain...`));
       await writeContractAsync({
         address: CONTRACT_ADDRESS,
         abi: CONTRACT_ABI,
@@ -682,13 +684,13 @@ export default function Home() {
         args: [BigInt(roundId)],
       });
       setClaimableRounds((prev) => prev.filter((c) => c.roundId !== roundId));
-      setToastMessage(`✅ 第 ${roundId} 局领取成功！`);
+      setToastMessage(L(`✅ 第 ${roundId} 局领取成功！`, `✅ Round #${roundId} claimed!`));
       refetchStreak();
       refetchJackpot();
       refetchBalance();
     } catch (err: any) {
       console.error(err);
-      setToastMessage(`❌ 领取失败：${err.shortMessage || err.message}`);
+      setToastMessage(L(`❌ 领取失败：${err.shortMessage || err.message}`, `❌ Claim failed: ${err.shortMessage || err.message}`));
     } finally {
       setClaimingRoundId(null);
     }
@@ -700,7 +702,7 @@ export default function Home() {
       if (isOperator) {
         try {
           const btcPriceCents = BigInt(Math.round(currentPrice * 100));
-          setToastMessage(`⚡ [主持人] 正在触发链上 10 秒闪电局…`);
+          setToastMessage(L(`⚡ [主持人] 正在触发链上 10 秒闪电局…`, `⚡ [Operator] Triggering onchain 10s Lightning Round...`));
           await writeContractAsync({
             address: CONTRACT_ADDRESS,
             abi: CONTRACT_ABI,
@@ -708,15 +710,15 @@ export default function Home() {
             functionName: 'triggerLightningRound',
             args: [btcPriceCents],
           });
-          setToastMessage(`✅ [主持人] 闪电局已触发！`);
+          setToastMessage(L(`✅ [主持人] 闪电局已触发！`, `✅ [Operator] Lightning Round triggered onchain!`));
           refetchRoundId();
           refetchStats();
           return;
         } catch (err: any) {
-          setToastMessage(`⚠️ 触发闪电局失败：${err.shortMessage || err.message}`);
+          setToastMessage(L(`⚠️ 触发闪电局失败：${err.shortMessage || err.message}`, `⚠️ Failed to trigger lightning onchain: ${err.shortMessage || err.message}`));
         }
       } else {
-        setToastMessage(`⚡ 只有合约主持人 (${(contractOperator as string)?.slice(0, 6)}...) 能触发链上闪电局。切换到游客演示模式可离线测试！`);
+        setToastMessage(L(`⚡ 只有合约主持人 (${(contractOperator as string)?.slice(0, 6)}...) 能触发链上闪电局。切换到游客演示模式可离线测试！`, `⚡ Only the contract operator (${(contractOperator as string)?.slice(0, 6)}...) can trigger onchain lightning. Switch to Backup Guest Demo to test offline!`));
         return;
       }
     }
@@ -727,7 +729,7 @@ export default function Home() {
     setTimeLeft(LIGHTNING_DURATION);
     setStatus('BETTING');
     playSound(659);
-    setToastMessage('⚡ 闪电模式开启！10 秒心跳局现在开始！');
+    setToastMessage(L('⚡ 闪电模式开启！10 秒心跳局现在开始！', '⚡ TURBO LIGHTNING MODE ACTIVATED! 10-second adrenaline round starts NOW!'));
   };
 
   // Display user stats
@@ -761,23 +763,23 @@ export default function Home() {
         <div className="flex flex-wrap items-center justify-between gap-3 p-3 rounded-xl bg-[#130f28]/90 border border-purple-500/20 text-xs font-mono">
           <div className="flex flex-wrap items-center gap-2 min-w-0">
             <span className={`w-2.5 h-2.5 rounded-full ${guestMode ? 'bg-amber-400' : 'bg-emerald-400 animate-ping'}`} />
-            <span className="text-gray-300">模式：</span>
+            <span className="text-gray-300">{L('模式：', 'MODE:')}</span>
             <span className={`px-2 py-0.5 rounded font-black ${
               guestMode ? 'bg-amber-950 text-amber-300 border border-amber-500/30' : 'bg-emerald-950 text-emerald-300 border border-emerald-500/30'
             }`}>
-              {guestMode ? '🛠️ 游客演示模式' : '⛓️ 链上模式（默认）'}
+              {guestMode ? L('🛠️ 游客演示模式', '🛠️ BACKUP GUEST DEMO MODE') : L('⛓️ 链上模式（默认）', '⛓️ ONCHAIN WAGMI MODE (DEFAULT)')}
             </span>
 
             {/* Operator Badge */}
             {isOperator && !guestMode && (
               <span className="flex items-center gap-1 px-2 py-0.5 rounded bg-yellow-500/20 text-yellow-300 border border-yellow-500/40 font-bold">
-                <Crown className="w-3.5 h-3.5 text-yellow-400" /> 主持人钱包已连接
+                <Crown className="w-3.5 h-3.5 text-yellow-400" /> {L('主持人钱包已连接', 'OPERATOR WALLET CONNECTED')}
               </span>
             )}
           </div>
 
           <div className="flex items-center gap-2">
-            <span className="text-gray-400">合约：</span>
+            <span className="text-gray-400">{L('合约：', 'CONTRACT:')}</span>
             <a
               href={`https://testnet.monadscan.com/address/${CONTRACT_ADDRESS}`}
               target="_blank"
@@ -794,7 +796,7 @@ export default function Home() {
                 disabled={isTxPending}
                 className="px-2.5 py-1 rounded bg-yellow-600 hover:bg-yellow-500 text-black font-bold text-[11px]"
               >
-                立即结算
+                {L('立即结算', 'Settle Round Now')}
               </button>
             )}
 
@@ -802,7 +804,7 @@ export default function Home() {
               onClick={toggleGuestMode}
               className="ml-2 px-2.5 py-1 rounded bg-purple-900/50 hover:bg-purple-800 text-purple-200 border border-purple-400/30 text-[11px]"
             >
-              {guestMode ? '切回链上模式' : '切换游客演示'}
+              {guestMode ? L('切回链上模式', 'Switch to Onchain') : L('切换游客演示', 'Switch to Guest Demo')}
             </button>
           </div>
         </div>
@@ -818,7 +820,7 @@ export default function Home() {
               onClick={() => setToastMessage(null)}
               className="text-gray-300 hover:text-white text-xs underline font-sans ml-4"
             >
-              关闭
+              {L('关闭', 'Dismiss')}
             </button>
           </div>
         )}
@@ -828,14 +830,14 @@ export default function Home() {
           <div className="p-3.5 rounded-xl bg-gradient-to-r from-emerald-900/90 to-purple-900/90 border border-emerald-400 text-white flex flex-wrap items-center justify-between gap-2 text-xs font-mono">
             <div className="flex items-center gap-2">
               <Award className="w-4 h-4 text-emerald-300" />
-              <span>第 {lastOnchainBetRoundId} 局已在链上结算确认！</span>
+              <span>{L(`第 ${lastOnchainBetRoundId} 局已在链上结算确认！`, `Round #${lastOnchainBetRoundId} confirmed resolved on Monad!`)}</span>
             </div>
             <button
               onClick={handleClaim}
               disabled={isTxPending}
               className="px-4 py-1.5 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-black font-bold uppercase tracking-wider"
             >
-              {isTxPending ? '领取中…' : `领取第 ${lastOnchainBetRoundId} 局`}
+              {isTxPending ? L('领取中…', 'Claiming...') : L(`领取第 ${lastOnchainBetRoundId} 局`, `Claim Round #${lastOnchainBetRoundId}`)}
             </button>
           </div>
         )}
@@ -845,19 +847,19 @@ export default function Home() {
           <div className="p-3.5 rounded-xl bg-slate-900/90 border border-amber-400/60 text-white flex flex-col gap-2 text-xs font-mono">
             <div className="flex items-center gap-2">
               <Award className="w-4 h-4 text-amber-300" />
-              <span className="font-bold uppercase tracking-wider">待领取奖金</span>
+              <span className="font-bold uppercase tracking-wider">{L('待领取奖金', 'Unclaimed Rounds')}</span>
             </div>
             {claimableRounds.map((c) => (
               <div key={c.roundId} className="flex items-center justify-between gap-2">
                 <span>
-                  第 {c.roundId} 局 · {c.position === 1 ? 'UP' : 'DOWN'} · 下注 {c.amount.toFixed(3)} MON · 预计领回 ≈ {c.payout.toFixed(3)} MON
+                  {L(`第 ${c.roundId} 局 · ${c.position === 1 ? 'UP' : 'DOWN'} · 下注 ${c.amount.toFixed(3)} MON · 预计领回 ≈ ${c.payout.toFixed(3)} MON`, `Round #${c.roundId} · ${c.position === 1 ? 'UP' : 'DOWN'} · Bet ${c.amount.toFixed(3)} MON · Est. payout ≈ ${c.payout.toFixed(3)} MON`)}
                 </span>
                 <button
                   onClick={() => handleClaimRound(c.roundId)}
                   disabled={claimingRoundId === c.roundId || isTxPending}
                   className="px-3 py-1 rounded-lg bg-amber-400 hover:bg-amber-300 text-black font-bold uppercase tracking-wider disabled:opacity-50"
                 >
-                  {claimingRoundId === c.roundId ? '领取中…' : '领取'}
+                  {claimingRoundId === c.roundId ? L('领取中…', 'Claiming...') : L('领取', 'Claim')}
                 </button>
               </div>
             ))}
@@ -917,7 +919,7 @@ export default function Home() {
               <div className="flex items-center justify-between mb-2">
                 <span className="font-bold text-gray-300 flex items-center gap-1.5">
                   <Flame className="w-4 h-4 text-orange-400" />
-                  连胜大奖进度
+                  {L('连胜大奖进度', 'WIN STREAK JACKPOT PROGRESS')}
                 </span>
                 <span className="font-mono font-bold text-amber-300">{activeUserStreak} / 5</span>
               </div>
@@ -941,13 +943,13 @@ export default function Home() {
               </div>
 
               <div className="flex justify-between text-[11px] text-gray-400 font-mono">
-                <span>当前连胜：{activeUserStreak}</span>
+                <span>{L(`当前连胜：${activeUserStreak}`, `Streak: ${activeUserStreak}x`)}</span>
                 {activeUserStreak >= 5 ? (
-                  <span className="text-rose-400 font-bold">💥 可掏空整个大奖池</span>
+                  <span className="text-rose-400 font-bold">{L('💥 可掏空整个大奖池', '💥 READY TO CLEAN ENTIRE JACKPOT')}</span>
                 ) : activeUserStreak >= 3 ? (
-                  <span className="text-amber-400 font-bold">🔥 已解锁 20% 奖池加成</span>
+                  <span className="text-amber-400 font-bold">{L('🔥 已解锁 20% 奖池加成', '🔥 20% POT BONUS UNLOCKED')}</span>
                 ) : (
-                  <span>连赢 3 局拿 20% 奖池 · 连赢 5 局全拿</span>
+                  <span>{L('连赢 3 局拿 20% 奖池 · 连赢 5 局全拿', 'Win 3 for 20% Pot, Win 5 for 100% Pot')}</span>
                 )}
               </div>
             </div>
@@ -960,10 +962,10 @@ export default function Home() {
         <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2">
           <div className="flex items-center gap-2">
             <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-            <span>基于 Monad 测试网 · 30 秒标准局 / 10 秒闪电局 · 币安 BTC 实时行情 · 动态赔率拔河</span>
+            <span>{L('基于 Monad 测试网 · 30 秒标准局 / 10 秒闪电局 · 币安 BTC 实时行情 · 动态赔率拔河', 'Built on Monad Testnet · 30s Standard / 10s Lightning · Binance Live BTC Feed · Dynamic Tug-of-War')}</span>
           </div>
           <div>
-            合约：<a href={`https://testnet.monadscan.com/address/${CONTRACT_ADDRESS}`} target="_blank" rel="noreferrer" className="text-purple-300 hover:text-white underline">{CONTRACT_ADDRESS.slice(0, 10)}...</a>
+            {L('合约：', 'Contract: ')}<a href={`https://testnet.monadscan.com/address/${CONTRACT_ADDRESS}`} target="_blank" rel="noreferrer" className="text-purple-300 hover:text-white underline">{CONTRACT_ADDRESS.slice(0, 10)}...</a>
           </div>
         </div>
       </footer>

@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { TrendingUp, TrendingDown, Zap, Flame } from 'lucide-react';
+import { useLang } from '@/i18n';
 
 interface TugOfWarBarProps {
   upPool: number;
@@ -20,6 +21,7 @@ export function TugOfWarBar({
   upPercent,
   isLightning,
 }: TugOfWarBarProps) {
+  const { L } = useLang();
   const downPercent = 100 - upPercent;
 
   return (
@@ -32,7 +34,7 @@ export function TugOfWarBar({
       <div className="flex flex-wrap items-center justify-between gap-x-2 gap-y-2 mb-3 text-xs md:text-sm font-semibold tracking-wider uppercase">
         <div className="flex items-center gap-1.5 text-emerald-400">
           <TrendingUp className="w-4 h-4 shrink-0" />
-          <span>多头 (UP)</span>
+          <span>{L('多头 (UP)', 'BULLS (UP)')}</span>
           <span className="text-white font-mono bg-emerald-950/80 px-2 py-0.5 rounded border border-emerald-500/40 whitespace-nowrap">
             {upPool.toFixed(3)} MON
           </span>
@@ -40,14 +42,14 @@ export function TugOfWarBar({
 
         <div className="hidden md:flex items-center gap-1.5 px-3 py-1 rounded-full bg-purple-900/40 border border-purple-500/30 text-purple-200">
           <Zap className="w-3.5 h-3.5 text-yellow-400 fill-yellow-400 animate-pulse" />
-          <span className="text-xs font-bold">动态赔率拔河</span>
+          <span className="text-xs font-bold">{L('动态赔率拔河', 'DYNAMIC ODDS PULL')}</span>
         </div>
 
         <div className="flex items-center gap-1.5 text-rose-400">
           <span className="text-white font-mono bg-rose-950/80 px-2 py-0.5 rounded border border-rose-500/40 whitespace-nowrap">
             {downPool.toFixed(3)} MON
           </span>
-          <span>空头 (DOWN)</span>
+          <span>{L('空头 (DOWN)', 'BEARS (DOWN)')}</span>
           <TrendingDown className="w-4 h-4 shrink-0" />
         </div>
       </div>
@@ -94,26 +96,26 @@ export function TugOfWarBar({
         <div className="flex items-center gap-1">
           {upOdds > downOdds && (
             <span className="inline-flex items-center gap-1 text-emerald-400 font-medium animate-pulse">
-              <Flame className="w-3.5 h-3.5" /> UP 冷门高赔率 ({upOdds.toFixed(2)}x)!
+              <Flame className="w-3.5 h-3.5" /> {L('UP 冷门高赔率', 'High Underdog Odds on UP')} ({upOdds.toFixed(2)}x)!
             </span>
           )}
           {upOdds <= downOdds && (
-            <span>基础倍率：<strong className="text-white font-mono">{upOdds.toFixed(2)}x</strong></span>
+            <span>{L('基础倍率：', 'Base multiplier: ')}<strong className="text-white font-mono">{upOdds.toFixed(2)}x</strong></span>
           )}
         </div>
 
         <div className="text-center font-mono text-[11px] text-purple-300/80">
-          总奖池：<span className="text-white font-bold">{(upPool + downPool).toFixed(3)} MON</span> (5% 进大奖池)
+          {L('总奖池：', 'Total Pot: ')}<span className="text-white font-bold">{(upPool + downPool).toFixed(3)} MON</span> {L('(5% 进大奖池)', '(5% Jackpot)')}
         </div>
 
         <div className="flex items-center gap-1 text-right">
           {downOdds > upOdds && (
             <span className="inline-flex items-center gap-1 text-rose-400 font-medium animate-pulse">
-              <Flame className="w-3.5 h-3.5" /> DOWN 冷门高赔率 ({downOdds.toFixed(2)}x)!
+              <Flame className="w-3.5 h-3.5" /> {L('DOWN 冷门高赔率', 'High Underdog Odds on DOWN')} ({downOdds.toFixed(2)}x)!
             </span>
           )}
           {downOdds <= upOdds && (
-            <span>基础倍率：<strong className="text-white font-mono">{downOdds.toFixed(2)}x</strong></span>
+            <span>{L('基础倍率：', 'Base multiplier: ')}<strong className="text-white font-mono">{downOdds.toFixed(2)}x</strong></span>
           )}
         </div>
       </div>
