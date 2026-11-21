@@ -23,6 +23,8 @@ Built from scratch for the Monad Hackathon / Buildathon.
 
 Demo 地址：https://monad-rush-turbo.vercel.app
 
+⚠️ **注意：中国大陆网络可能打不开 Demo，需要开 VPN / 代理后再访问。**
+
 ---
 
 ## 🎮 30 秒学会玩法 (How to Play)
