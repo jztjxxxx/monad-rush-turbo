@@ -15,6 +15,16 @@ Built from scratch for the Monad Hackathon / Buildathon.
 
 ---
 
+## 📱 扫码直接玩 (Scan to Play)
+
+用钱包 App（MetaMask / OKX 等）扫一扫，打开后连接钱包即可下注：
+
+![扫码进入 Monad Rush Turbo](qr-code.svg)
+
+Demo 地址：https://monad-rush-turbo.vercel.app
+
+---
+
 ## 🎮 30 秒学会玩法 (How to Play)
 
 连钱包 → 选 **UP** 还是 **DOWN** → 押 MON → 等 30 秒开奖 → 赢了点 **Claim** 领钱
