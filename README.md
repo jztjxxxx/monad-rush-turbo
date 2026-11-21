@@ -1,6 +1,6 @@
 # ⚡ MONAD RUSH TURBO ⚡
 
-**30 秒定生死。慢一秒，都是输家。**
+**30 秒定输赢**
 
 > **Sub-Second Dynamic Odds Prediction Game with Win-Streak Jackpots & 10s Lightning Rounds on Monad**
 
@@ -85,6 +85,16 @@ monad-rush-turbo/
 - **RPC URL**: `https://testnet-rpc.monad.xyz`
 - **Explorer**: [https://testnet.monadscan.com](https://testnet.monadscan.com)
 - **Faucet**: [https://faucet.monad.xyz](https://faucet.monad.xyz)
+
+---
+
+## 🔍 合约地址 & 区块浏览器 (Contract & Block Explorer)
+
+- **合约地址 (Contract)**: `0x74b955979f9bc379dd1a42ef86fe24dadd5883c9`
+- **Monadscan 查合约**: [testnet.monadscan.com/address/0x74b955979f9bc379dd1a42ef86fe24dadd5883c9](https://testnet.monadscan.com/address/0x74b955979f9bc379dd1a42ef86fe24dadd5883c9)
+- **MonadVision 查合约**: [testnet.monadvision.com/address/0x74b955979f9bc379dd1a42ef86fe24dadd5883c9](https://testnet.monadvision.com/address/0x74b955979f9bc379dd1a42ef86fe24dadd5883c9)
+
+每一笔下注、结算、领奖都在链上，点开上面任意一个浏览器就能查到。
 
 ---
 
